@@ -122,6 +122,8 @@ jobs:
         with:
           container: ghcr.io/${{ github.repository_owner }}/${{ matrix.image_name }}
           registry: ghcr.io
+          registry-token: ${{ secrets.GITHUB_TOKEN }}
+          signing-secret: ${{ secrets.SIGNING_SECRET }}
           tags: ${{ steps.push.outputs.digest }}
 
       - name: Verify image
