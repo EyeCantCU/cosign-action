@@ -1,14 +1,8 @@
 name: Test Actions
 on:
-  pull_request:
-    branches:
-      - master
-    paths-ignore:
-      - '**.md'
-      - '**.txt'
   push:
     branches:
-      - master
+      - main
     paths-ignore:
       - '**.md'
       - '**.txt'
@@ -19,7 +13,7 @@ env:
 
 jobs:
   push-ghcr:
-    name: Build and push image
+    name: Test
     runs-on: ubuntu-22.04
     permissions:
       contents: read
