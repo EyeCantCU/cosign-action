@@ -1,0 +1,21 @@
+name: 'Cosign Action - Verify'
+author: 'EyeCantCU'
+description: 'Verifies target container'
+inputs:
+  container:
+    description: 'Path to target container to verify'
+    required: true
+  pubkey:
+    description: 'Public key used by target container'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Install cosign
+      using: sigstore/cosign-installer@v3.3.0
+
+    - name: Verify container
+      shell: bash
+      run: cosign verify --key ${{ inputs.pubkey }} ${{ inputs.container }}
+      env:
+        COSIGN_EXPERIMENTAL: false

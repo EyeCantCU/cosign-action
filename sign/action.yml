@@ -1,0 +1,41 @@
+name: 'Cosign Action - Sign'
+author: 'EyeCantCU'
+description: 'Signs target container'
+inputs:
+  container:
+    description: 'Path to target container to sign'
+    required: true
+  registry:
+    description: 'Registry hosting the target container'
+    required: true
+  tags:
+    description: 'Tags used by target container'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Login to Container Registry
+      uses: docker/login-action@v3
+      with:
+        registry: ${{ inputs.registry }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    # Workaround bug where capital letters in your GitHub username make it impossible to push to GHCR.
+    # https://github.com/macbre/push-to-ghcr/issues/12
+    - name: Lowercase Registry
+      id: registry_case
+      uses: ASzc/change-string-case-action@v6
+      with:
+        string: ${{ inputs.container }}
+
+    - name: Install cosign
+      using: sigstore/cosign-installer@v3.3.0
+
+    - name: Sign container image
+      run: |
+        cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ inputs.container }}@${TAGS}
+      env:
+        COSIGN_EXPERIMENTAL: false
+        COSIGN_PRIVATE_KEY: ${{ secrets.SIGNING_SECRET }}
+        TAGS: ${{ inputs.tags }}
