@@ -39,6 +39,7 @@ runs:
       uses: sigstore/cosign-installer@v3.3.0
 
     - name: Sign container image
+      shell: bash
       run: |
         cosign sign -y --key ${{ inputs.signing-secret }} ${{ inputs.container }}@${TAGS}
       env:
