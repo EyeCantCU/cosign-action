@@ -36,7 +36,7 @@ runs:
         string: ${{ inputs.container }}
 
     - name: Install cosign
-      using: sigstore/cosign-installer@v3.3.0
+      uses: sigstore/cosign-installer@v3.3.0
 
     - name: Sign container image
       run: |

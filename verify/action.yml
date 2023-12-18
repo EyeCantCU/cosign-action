@@ -12,7 +12,7 @@ runs:
   using: "composite"
   steps:
     - name: Install cosign
-      using: sigstore/cosign-installer@v3.3.0
+      uses: sigstore/cosign-installer@v3.3.0
 
     - name: Verify container
       shell: bash
