@@ -20,10 +20,9 @@ jobs:
     name: Sign container with Cosign
     steps:
       - name: Sign container
-        uses: EyeCantCU/cosign-action/sign@v0.1.0
+        uses: EyeCantCU/cosign-action/sign@v0.1.1
         with:
           container: ghcr.io/ublue-os/silverblue-main
-          registry: ghcr.io
           registry-token: ${{ secrets.GITHUB_TOKEN }}
           signing-secret: ${{ secrets.SIGNING_SECRET }}
           tags: latest
@@ -45,7 +44,7 @@ jobs:
     name: Verify container with Cosign
     steps:
       - name: Verify container
-        uses: EyeCantCU/cosign-action/verify@v0.1.0
+        uses: EyeCantCU/cosign-action/verify@v0.1.1
         with:
           container: ghcr.io/ublue-os/silverblue-main:latest
           pubkey: https://raw.githubusercontent.com/ublue-os/main/main/cosign.pub
