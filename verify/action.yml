@@ -14,8 +14,15 @@ runs:
     - name: Install cosign
       uses: sigstore/cosign-installer@v3.3.0
 
+    # https://github.com/macbre/push-to-ghcr/issues/12
+    - name: Lowercase container path
+      id: container_case
+      uses: ASzc/change-string-case-action@v5
+      with:
+        string: ${{ inputs.container }}
+
     - name: Verify container
       shell: bash
-      run: cosign verify --key ${{ inputs.pubkey }} ${{ inputs.container }}
+      run: cosign verify --key ${{ inputs.pubkey }} ${{ steps.container_case.outputs.lowercase }}
       env:
         COSIGN_EXPERIMENTAL: false
