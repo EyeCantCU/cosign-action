@@ -2,12 +2,18 @@ name: 'Cosign Action - Verify'
 author: 'EyeCantCU'
 description: 'Verifies target container'
 inputs:
+  cert-identity:
+    description: 'The identity certificate'
+    required: false
   container:
     description: 'Path to target container to verify'
     required: true
   pubkey:
     description: 'Public key used by target container'
-    required: true
+    required: false
+  oidc-issuer:
+    description: 'The certificate OIDC issuer'
+    required: false
 runs:
   using: "composite"
   steps:
@@ -23,6 +29,13 @@ runs:
 
     - name: Verify container
       shell: bash
-      run: cosign verify --key ${{ inputs.pubkey }} ${{ steps.container_case.outputs.lowercase }}
+      run: |
+        if [[ -n "${{ inputs.pubkey }}" ]]; then
+          cosign verify --key ${{ inputs.pubkey }} ${{ steps.container_case.outputs.lowercase }}
+        elif [[ -n "${{ inputs.cert-identity }}" && -n "${{ inputs.oidc-issuer }}" ]]; then
+          cosign verify ${{ steps.container_case.outputs.lowercase }} --certificate-identity=${{ inputs.cert-identity }} --certificate-oidc-issuer=${{ inputs.oidc-issuer }}
+        else
+          exit 1
+        fi
       env:
         COSIGN_EXPERIMENTAL: false
