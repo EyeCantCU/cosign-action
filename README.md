@@ -20,7 +20,7 @@ jobs:
     name: Sign container with Cosign
     steps:
       - name: Sign container
-        uses: EyeCantCU/cosign-action/sign@v0.1.1
+        uses: EyeCantCU/cosign-action/sign@v0.1.2
         with:
           container: ghcr.io/ublue-os/silverblue-main
           registry-token: ${{ secrets.GITHUB_TOKEN }}
@@ -44,7 +44,7 @@ jobs:
     name: Verify container with Cosign
     steps:
       - name: Verify container
-        uses: EyeCantCU/cosign-action/verify@v0.1.1
+        uses: EyeCantCU/cosign-action/verify@v0.1.2
         with:
           container: ghcr.io/ublue-os/silverblue-main:latest
           pubkey: https://raw.githubusercontent.com/ublue-os/main/main/cosign.pub
@@ -62,7 +62,7 @@ jobs:
     name: Verify container with Cosign
     steps:
       - name: Verify container
-        uses: EyeCantCU/cosign-action/verify@v0.1.1
+        uses: EyeCantCU/cosign-action/verify@v0.1.2
         with:
           container: cgr.dev/chainguard/busybox
           cert-identity: https://github.com/chainguard-images/images/.github/workflows/release.yaml@refs/heads/main
