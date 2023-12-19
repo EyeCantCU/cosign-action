@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.2](https://github.com/EyeCantCU/cosign-action/compare/v0.1.1...v0.1.2) (2023-12-19)
+
+
+### Features
+
+* **verify:** Support verification against certificates ([07602f6](https://github.com/EyeCantCU/cosign-action/commit/07602f6adcc2f3126b9e229e5c5b076098a0289f))
+
+
+### Miscellaneous Chores
+
+* release v0.1.2 ([5d2afe8](https://github.com/EyeCantCU/cosign-action/commit/5d2afe8de63603906a26a792fffce38f3fdabfad))
+
 ## 0.1.1 (2023-12-18)
 
 
