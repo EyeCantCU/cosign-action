@@ -10,12 +10,14 @@ inputs:
     required: true
   pubkey:
     description: 'Public key used by target container'
+    default: './cosign.pub'
     required: false
   oidc-issuer:
     description: 'The certificate OIDC issuer'
     required: false
   registry:
     description: 'Registry where the container resides'
+    default: 'ghcr.io/ublue-os'
     required: true
 runs:
   using: "composite"
@@ -33,10 +35,10 @@ runs:
     - name: Verify container
       shell: bash
       run: |
-        if [[ -n "${{ inputs.pubkey }}" ]]; then
-          cosign verify --key ${{ inputs.pubkey }} ${{ steps.normalized_registry.outputs }}/${CONTAINERS}
-        elif [[ -n "${{ inputs.cert-identity }}" && -n "${{ inputs.oidc-issuer }}" ]]; then
+        if [[ -n "${{ inputs.cert-identity }}" && -n "${{ inputs.oidc-issuer }}" ]]; then
           cosign verify ${{ steps.normalized_registry.outputs }}/${CONTAINERS} --certificate-identity=${{ inputs.cert-identity }} --certificate-oidc-issuer=${{ inputs.oidc-issuer }}
+        elif [[ -n "${{ inputs.pubkey }}" ]]; then
+          cosign verify --key ${{ inputs.pubkey }} ${{ steps.normalized_registry.outputs }}/${CONTAINERS}
         else
           exit 1
         fi

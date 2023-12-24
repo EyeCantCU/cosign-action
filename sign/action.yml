@@ -13,6 +13,7 @@ inputs:
     required: true
   registry:
     description: 'Registry where the container resides'
+    default: 'ghcr.io/ublue-os'
     required: true
   tags:
     description: 'Tags used by target container'
