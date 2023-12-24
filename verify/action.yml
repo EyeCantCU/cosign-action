@@ -25,20 +25,14 @@ runs:
     - name: Install cosign
       uses: sigstore/cosign-installer@v3.3.0
 
-    # https://github.com/macbre/push-to-ghcr/issues/12
-    - name: Normalize registry
-      id: normalized_registry
-      shell: bash
-      run: |
-        echo ${{ inputs.registry }} | awk '{print tolower($0)}'
-
     - name: Verify container
       shell: bash
       run: |
+        REGISTRY=$(echo ${{ inputs.registry }} | awk '{print tolower($0)}')
         if [[ -n "${{ inputs.cert-identity }}" && -n "${{ inputs.oidc-issuer }}" ]]; then
-          cosign verify ${{ steps.normalized_registry.outputs }}/${CONTAINERS} --certificate-identity=${{ inputs.cert-identity }} --certificate-oidc-issuer=${{ inputs.oidc-issuer }}
+          cosign verify $REGISTRY/${CONTAINERS} --certificate-identity=${{ inputs.cert-identity }} --certificate-oidc-issuer=${{ inputs.oidc-issuer }}
         elif [[ -n "${{ inputs.pubkey }}" ]]; then
-          cosign verify --key ${{ inputs.pubkey }} ${{ steps.normalized_registry.outputs }}/${CONTAINERS}
+          cosign verify --key ${{ inputs.pubkey }} $REGISTRY/${CONTAINERS}
         else
           exit 1
         fi

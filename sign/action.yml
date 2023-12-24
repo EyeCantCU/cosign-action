@@ -31,17 +31,11 @@ runs:
     - name: Install cosign
       uses: sigstore/cosign-installer@v3.3.0
 
-    # https://github.com/macbre/push-to-ghcr/issues/12
-    - name: Normalize registry
-      id: normalized_registry
-      shell: bash
-      run: |
-        echo ${{ inputs.registry }} | awk '{print tolower($0)}'
-
     - name: Sign container image
       shell: bash
       run: |
-        cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ steps.normalized_registry.outputs }}/${CONTAINERS}@${TAGS}
+        REGISTRY=$(echo ${{ inputs.registry }} | awk '{print tolower($0)}')
+        cosign sign -y --key env://COSIGN_PRIVATE_KEY $REGISTRY/${CONTAINERS}@${TAGS}
       env:
         CONTAINERS: ${{ inputs.containers }}
         COSIGN_EXPERIMENTAL: false
