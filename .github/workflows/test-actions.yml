@@ -28,6 +28,15 @@ jobs:
       - name: Checkout Push to Registry action
         uses: actions/checkout@v4
 
+      - name: Verify Chainguard images
+        uses: ./verify
+        with:
+          containers: |
+            bash
+          cert-identity: https://github.com/chainguard-images/images/.github/workflows/release.yaml@refs/heads/main
+          oidc-issuer: https://token.actions.githubusercontent.com
+          registry: cgr.dev/chainguard
+
       - name: Generate tags
         id: generate-tags
         shell: bash
