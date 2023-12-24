@@ -2,8 +2,8 @@ name: 'Cosign Action - Sign'
 author: 'EyeCantCU'
 description: 'Signs target container'
 inputs:
-  container:
-    description: 'Name of target container to sign'
+  containers:
+    description: 'Names of target containers to sign'
     required: true
   registry-token:
     description: 'Password for container registry'
@@ -35,17 +35,18 @@ runs:
       uses: sigstore/cosign-installer@v3.3.0
 
     # https://github.com/macbre/push-to-ghcr/issues/12
-    - name: Lowercase container path
-      id: container_path
+    - name: Normalize registry
+      id: normalized_registry
       shell: bash
       run: |
-        echo ${{ inputs.registry }}/${{ inputs.container }} | awk '{print tolower($0)}'
+        echo ${{ inputs.registry }} | awk '{print tolower($0)}'
 
     - name: Sign container image
       shell: bash
       run: |
-        cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ steps.container_path.outputs }}@${TAGS}
+        cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ steps.normalized_registry.outputs }}/${CONTAINERS}@${TAGS}
       env:
+        CONTAINERS: ${{ inputs.containers }}
         COSIGN_EXPERIMENTAL: false
         COSIGN_PRIVATE_KEY: ${{ inputs.signing-secret }}
         TAGS: ${{ inputs.tags }}

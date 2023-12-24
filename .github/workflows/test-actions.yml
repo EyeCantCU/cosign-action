@@ -114,7 +114,8 @@ jobs:
       - name: Sign image
         uses: ./sign
         with:
-          container: ghcr.io/${{ github.repository_owner }}/${{ matrix.image_name }}
+          containers: ${{ matrix.image_name }}
+          registry: ghcr.io/${{ github.repository_owner }}
           registry-token: ${{ secrets.GITHUB_TOKEN }}
           signing-secret: ${{ secrets.SIGNING_SECRET }}
           tags: ${{ steps.push.outputs.digest }}
@@ -122,8 +123,9 @@ jobs:
       - name: Verify image
         uses: ./verify
         with:
-          container: ghcr.io/${{ github.repository_owner }}/${{ matrix.image_name }}
+          containers: ${{ matrix.image_name }}
           pubkey: ./cosign.pub
+          registry: ghcr.io/${{ github.repository_owner }}
 
       - name: Echo outputs
         if: github.event_name != 'pull_request'

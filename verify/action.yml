@@ -5,8 +5,8 @@ inputs:
   cert-identity:
     description: 'The identity certificate'
     required: false
-  container:
-    description: 'Name of the target container to verify'
+  containers:
+    description: 'Names of the target containers to verify'
     required: true
   pubkey:
     description: 'Public key used by target container'
@@ -24,21 +24,22 @@ runs:
       uses: sigstore/cosign-installer@v3.3.0
 
     # https://github.com/macbre/push-to-ghcr/issues/12
-    - name: Lowercase container path
-      id: container_path
+    - name: Normalize registry
+      id: normalized_registry
       shell: bash
       run: |
-        echo ${{ inputs.registry }}/${{ inputs.container }} | awk '{print tolower($0)}'
+        echo ${{ inputs.registry }} | awk '{print tolower($0)}'
 
     - name: Verify container
       shell: bash
       run: |
         if [[ -n "${{ inputs.pubkey }}" ]]; then
-          cosign verify --key ${{ inputs.pubkey }} ${{ steps.container_path.outputs }}
+          cosign verify --key ${{ inputs.pubkey }} ${{ steps.normalized_registry.outputs }}/${CONTAINERS}
         elif [[ -n "${{ inputs.cert-identity }}" && -n "${{ inputs.oidc-issuer }}" ]]; then
-          cosign verify ${{ steps.container_path.outputs }} --certificate-identity=${{ inputs.cert-identity }} --certificate-oidc-issuer=${{ inputs.oidc-issuer }}
+          cosign verify ${{ steps.normalized_registry.outputs }}/${CONTAINERS} --certificate-identity=${{ inputs.cert-identity }} --certificate-oidc-issuer=${{ inputs.oidc-issuer }}
         else
           exit 1
         fi
       env:
+        CONTAINERS: ${{ inputs.containers }}
         COSIGN_EXPERIMENTAL: false
