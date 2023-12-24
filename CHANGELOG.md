@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.2.0](https://github.com/EyeCantCU/cosign-action/compare/v0.1.2...v0.2.0) (2023-12-24)
+
+
+### Features
+
+* **action:** Support passing multiple containers ([9060e51](https://github.com/EyeCantCU/cosign-action/commit/9060e51a433488df4165dbb41799909950f37301))
+
+
+### Bug Fixes
+
+* **sign:** Remove unused registry extraction ([236af3e](https://github.com/EyeCantCU/cosign-action/commit/236af3e8affae9d4a272aa52bfd7b1c76558a0b0))
+
+
+### Miscellaneous Chores
+
+* release v0.2.0 ([0c5718d](https://github.com/EyeCantCU/cosign-action/commit/0c5718d954259d1b743e434b154132dc5b12a058))
+
 ## [0.1.2](https://github.com/EyeCantCU/cosign-action/compare/v0.1.1...v0.1.2) (2023-12-19)
 
 
