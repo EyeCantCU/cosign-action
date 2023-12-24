@@ -10,7 +10,7 @@ inputs:
     required: true
   pubkey:
     description: 'Public key used by target container'
-    default: './cosign.pub'
+    default: 'https://raw.githubusercontent.com/ublue-os/main/main/cosign.pub'
     required: false
   oidc-issuer:
     description: 'The certificate OIDC issuer'
