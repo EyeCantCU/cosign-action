@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/EyeCantCU/cosign-action/compare/v0.2.0...v0.2.1) (2023-12-24)
+
+
+### Miscellaneous Chores
+
+* release v0.2.1 ([d7b3670](https://github.com/EyeCantCU/cosign-action/commit/d7b3670e47853f0b70625ac3bb9a702941bc3ff2))
+
 ## [0.2.0](https://github.com/EyeCantCU/cosign-action/compare/v0.1.2...v0.2.0) (2023-12-24)
 
 
