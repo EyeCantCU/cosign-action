@@ -3,13 +3,16 @@ author: 'EyeCantCU'
 description: 'Signs target container'
 inputs:
   container:
-    description: 'Path to target container to sign'
+    description: 'Name of target container to sign'
     required: true
   registry-token:
     description: 'Password for container registry'
     required: true
   signing-secret:
     description: 'Private key used to sign target container.'
+    required: true
+  registry:
+    description: 'Registry where the container resides'
     required: true
   tags:
     description: 'Tags used by target container'
@@ -33,15 +36,15 @@ runs:
 
     # https://github.com/macbre/push-to-ghcr/issues/12
     - name: Lowercase container path
-      id: container_case
+      id: container_path
       shell: bash
       run: |
-        echo ${{ inputs.container }} | awk '{print tolower($0)}'
+        echo ${{ inputs.registry }}/${{ inputs.container }} | awk '{print tolower($0)}'
 
     - name: Sign container image
       shell: bash
       run: |
-        cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ steps.container_case.outputs }}@${TAGS}
+        cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ steps.container_path.outputs }}@${TAGS}
       env:
         COSIGN_EXPERIMENTAL: false
         COSIGN_PRIVATE_KEY: ${{ inputs.signing-secret }}

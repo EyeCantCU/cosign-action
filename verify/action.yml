@@ -6,7 +6,7 @@ inputs:
     description: 'The identity certificate'
     required: false
   container:
-    description: 'Path to target container to verify'
+    description: 'Name of the target container to verify'
     required: true
   pubkey:
     description: 'Public key used by target container'
@@ -14,6 +14,9 @@ inputs:
   oidc-issuer:
     description: 'The certificate OIDC issuer'
     required: false
+  registry:
+    description: 'Registry where the container resides'
+    required: true
 runs:
   using: "composite"
   steps:
@@ -22,18 +25,18 @@ runs:
 
     # https://github.com/macbre/push-to-ghcr/issues/12
     - name: Lowercase container path
-      id: container_case
+      id: container_path
       shell: bash
       run: |
-        echo ${{ inputs.container }} | awk '{print tolower($0)}'
+        echo ${{ inputs.registry }}/${{ inputs.container }} | awk '{print tolower($0)}'
 
     - name: Verify container
       shell: bash
       run: |
         if [[ -n "${{ inputs.pubkey }}" ]]; then
-          cosign verify --key ${{ inputs.pubkey }} ${{ steps.container_case.outputs }}
+          cosign verify --key ${{ inputs.pubkey }} ${{ steps.container_path.outputs }}
         elif [[ -n "${{ inputs.cert-identity }}" && -n "${{ inputs.oidc-issuer }}" ]]; then
-          cosign verify ${{ steps.container_case.outputs }} --certificate-identity=${{ inputs.cert-identity }} --certificate-oidc-issuer=${{ inputs.oidc-issuer }}
+          cosign verify ${{ steps.container_path.outputs }} --certificate-identity=${{ inputs.cert-identity }} --certificate-oidc-issuer=${{ inputs.oidc-issuer }}
         else
           exit 1
         fi
