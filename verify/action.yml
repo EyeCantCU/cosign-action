@@ -23,17 +23,17 @@ runs:
     # https://github.com/macbre/push-to-ghcr/issues/12
     - name: Lowercase container path
       id: container_case
-      uses: ASzc/change-string-case-action@v5
-      with:
-        string: ${{ inputs.container }}
+      shell: bash
+      run: |
+        echo ${{ inputs.container }} | awk '{print tolower($0)}'
 
     - name: Verify container
       shell: bash
       run: |
         if [[ -n "${{ inputs.pubkey }}" ]]; then
-          cosign verify --key ${{ inputs.pubkey }} ${{ steps.container_case.outputs.lowercase }}
+          cosign verify --key ${{ inputs.pubkey }} ${{ steps.container_case.outputs }}
         elif [[ -n "${{ inputs.cert-identity }}" && -n "${{ inputs.oidc-issuer }}" ]]; then
-          cosign verify ${{ steps.container_case.outputs.lowercase }} --certificate-identity=${{ inputs.cert-identity }} --certificate-oidc-issuer=${{ inputs.oidc-issuer }}
+          cosign verify ${{ steps.container_case.outputs }} --certificate-identity=${{ inputs.cert-identity }} --certificate-oidc-issuer=${{ inputs.oidc-issuer }}
         else
           exit 1
         fi

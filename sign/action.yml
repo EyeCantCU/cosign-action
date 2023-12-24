@@ -34,14 +34,14 @@ runs:
     # https://github.com/macbre/push-to-ghcr/issues/12
     - name: Lowercase container path
       id: container_case
-      uses: ASzc/change-string-case-action@v5
-      with:
-        string: ${{ inputs.container }}
+      shell: bash
+      run: |
+        echo ${{ inputs.container }} | awk '{print tolower($0)}'
 
     - name: Sign container image
       shell: bash
       run: |
-        cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ steps.container_case.outputs.lowercase }}@${TAGS}
+        cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ steps.container_case.outputs }}@${TAGS}
       env:
         COSIGN_EXPERIMENTAL: false
         COSIGN_PRIVATE_KEY: ${{ inputs.signing-secret }}
