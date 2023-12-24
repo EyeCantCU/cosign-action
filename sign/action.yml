@@ -35,7 +35,9 @@ runs:
       shell: bash
       run: |
         REGISTRY=$(echo ${{ inputs.registry }} | awk '{print tolower($0)}')
-        cosign sign -y --key env://COSIGN_PRIVATE_KEY $REGISTRY/${CONTAINERS}@${TAGS}
+        for CONTAINER in $(echo "${CONTAINERS}" | tr "," "\n"); do
+          cosign sign -y --key env://COSIGN_PRIVATE_KEY $REGISTRY/${CONTAINER}@${TAGS}
+        done
       env:
         CONTAINERS: ${{ inputs.containers }}
         COSIGN_EXPERIMENTAL: false

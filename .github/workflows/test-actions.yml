@@ -31,8 +31,7 @@ jobs:
       - name: Verify Chainguard images
         uses: ./verify
         with:
-          containers: |
-            bash
+          containers: apko, bash, busybox, caddy, vt
           cert-identity: https://github.com/chainguard-images/images/.github/workflows/release.yaml@refs/heads/main
           oidc-issuer: https://token.actions.githubusercontent.com
           registry: cgr.dev/chainguard

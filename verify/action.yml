@@ -30,9 +30,13 @@ runs:
       run: |
         REGISTRY=$(echo ${{ inputs.registry }} | awk '{print tolower($0)}')
         if [[ -n "${{ inputs.cert-identity }}" && -n "${{ inputs.oidc-issuer }}" ]]; then
-          cosign verify $REGISTRY/${CONTAINERS} --certificate-identity=${{ inputs.cert-identity }} --certificate-oidc-issuer=${{ inputs.oidc-issuer }}
+          for CONTAINER in $(echo "${CONTAINERS}" | tr "," "\n"); do
+            cosign verify $REGISTRY/${CONTAINER} --certificate-identity=${{ inputs.cert-identity }} --certificate-oidc-issuer=${{ inputs.oidc-issuer }}
+          done
         elif [[ -n "${{ inputs.pubkey }}" ]]; then
-          cosign verify --key ${{ inputs.pubkey }} $REGISTRY/${CONTAINERS}
+          for CONTAINER in $(echo "${CONTAINERS}" | tr "," "\n"); do
+            cosign verify --key ${{ inputs.pubkey }} $REGISTRY/${CONTAINER}
+          done
         else
           exit 1
         fi
