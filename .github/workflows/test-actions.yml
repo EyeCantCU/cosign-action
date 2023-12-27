@@ -132,6 +132,7 @@ jobs:
         uses: ./verify
         with:
           containers: ${{ matrix.image_name }}
+          pubkey: ./cosign.pub
           registry: ghcr.io/${{ github.repository_owner }}
 
       - name: Echo outputs
