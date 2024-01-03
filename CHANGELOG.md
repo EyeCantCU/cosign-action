@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.2.2](https://github.com/EyeCantCU/cosign-action/compare/v0.2.1...v0.2.2) (2024-01-03)
+
+
+### Features
+
+* **verify:** Add option to fail silently ([c0e6a7d](https://github.com/EyeCantCU/cosign-action/commit/c0e6a7d58b1b65b769c829eb8ab7162a5535d5a8))
+* **verify:** Parse output with jq for cleaner formatting ([a3aa801](https://github.com/EyeCantCU/cosign-action/commit/a3aa80197eb5d21b9e9a3e2f8c423ca707a0b815))
+
+
+### Bug Fixes
+
+* **test-actions:** Pass cosign.pub ([67cfa5c](https://github.com/EyeCantCU/cosign-action/commit/67cfa5c47607edda04fc6dec77762edeaf702b93))
+
+
+### Miscellaneous Chores
+
+* release v0.2.2 ([9cc2935](https://github.com/EyeCantCU/cosign-action/commit/9cc2935a0f8457237f88feceee1dca727c6cc641))
+
 ## [0.2.1](https://github.com/EyeCantCU/cosign-action/compare/v0.2.0...v0.2.1) (2023-12-24)
 
 
