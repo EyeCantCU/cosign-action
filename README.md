@@ -71,3 +71,5 @@ jobs:
           cert-identity: https://github.com/chainguard-images/images/.github/workflows/release.yaml@refs/heads/main
           oidc-issuer: https://token.actions.githubusercontent.com
 ```
+
+While not recommended, you may also opt to fail verification silently without disrupting your workflow by setting `fail-silently: 'true'`.

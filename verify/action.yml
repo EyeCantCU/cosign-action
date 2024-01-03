@@ -8,6 +8,10 @@ inputs:
   containers:
     description: 'Names of the target containers to verify'
     required: true
+  fail-silently:
+    description: 'Fail without exiting.'
+    default: 'false'
+    required: false
   pubkey:
     description: 'Public key used by target container'
     default: 'https://raw.githubusercontent.com/ublue-os/main/main/cosign.pub'
@@ -34,14 +38,18 @@ runs:
           for CONTAINER in $(echo "${CONTAINERS}" | tr "," "\n"); do
             if ! cosign verify $REGISTRY/${CONTAINER} --certificate-identity=${{ inputs.cert-identity }} --certificate-oidc-issuer=${{ inputs.oidc-issuer }} | jq; then
               echo "NOTICE: Verification failed. Please ensure your public key is correct."
-              exit 1
+              if [[ "${{ matrix.fail-silently }}" != 'true' ]]; then
+                exit 1
+              fi
             fi
           done
         elif [[ -n "${{ inputs.pubkey }}" ]]; then
           for CONTAINER in $(echo "${CONTAINERS}" | tr "," "\n"); do
             if ! cosign verify --key ${{ inputs.pubkey }} $REGISTRY/${CONTAINER} | jq; then
               echo "NOTICE: Verification failed. Please ensure your public key is correct."
-              exit 1
+              if [[ "${{ matrix.fail-silently }}" != 'true' ]]; then
+                exit 1
+              fi
             fi
           done
         else
