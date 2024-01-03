@@ -32,11 +32,17 @@ runs:
         set -o pipefail
         if [[ -n "${{ inputs.cert-identity }}" && -n "${{ inputs.oidc-issuer }}" ]]; then
           for CONTAINER in $(echo "${CONTAINERS}" | tr "," "\n"); do
-            cosign verify $REGISTRY/${CONTAINER} --certificate-identity=${{ inputs.cert-identity }} --certificate-oidc-issuer=${{ inputs.oidc-issuer }} | jq
+            if ! cosign verify $REGISTRY/${CONTAINER} --certificate-identity=${{ inputs.cert-identity }} --certificate-oidc-issuer=${{ inputs.oidc-issuer }} | jq; then
+              echo "NOTICE: Verification failed. Please ensure your public key is correct."
+              exit 1
+            fi
           done
         elif [[ -n "${{ inputs.pubkey }}" ]]; then
           for CONTAINER in $(echo "${CONTAINERS}" | tr "," "\n"); do
-            cosign verify --key ${{ inputs.pubkey }} $REGISTRY/${CONTAINER} | jq
+            if ! cosign verify --key ${{ inputs.pubkey }} $REGISTRY/${CONTAINER} | jq; then
+              echo "NOTICE: Verification failed. Please ensure your public key is correct."
+              exit 1
+            fi
           done
         else
           exit 1
