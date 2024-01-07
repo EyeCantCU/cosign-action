@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/EyeCantCU/cosign-action/compare/v0.2.2...v0.3.0) (2024-01-07)
+
+
+### Features
+
+* **sign:** Use Chainguard's cosign image in place of cosign-installer ([0d20245](https://github.com/EyeCantCU/cosign-action/commit/0d2024571135ce9dcb93e1720fb99d87b70d3a22))
+
 ## [0.2.2](https://github.com/EyeCantCU/cosign-action/compare/v0.2.1...v0.2.2) (2024-01-03)
 
 
