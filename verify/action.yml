@@ -30,8 +30,8 @@ runs:
       shell: bash
       run: |
         docker pull cgr.dev/chainguard/cosign:latest
-        docker run -d --name cosign cgr.dev/chainguard/cosign:latest
-        docker cp cosign:/usr/bin/cosign /usr/local/bin/cosign
+        CONTAINER_ID=$(docker run -d cgr.dev/chainguard/cosign:latest)
+        docker cp "${CONTAINER_ID}":/usr/bin/cosign /usr/local/bin/cosign
 
     - name: Verify container
       shell: bash
