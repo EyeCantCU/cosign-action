@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.3.0](https://github.com/EyeCantCU/cosign-action/compare/v0.2.2...v0.3.0) (2024-07-02)
+
+
+### Features
+
+* Pull latest cosign binary from Chainguard ([4a69e93](https://github.com/EyeCantCU/cosign-action/commit/4a69e93c595ac7243aeb3d3e7191bd30708d3965))
+
+
+### Bug Fixes
+
+* Use cosign container ID instead of set name ([ab5ee40](https://github.com/EyeCantCU/cosign-action/commit/ab5ee40ad064ea5b09ea27a4838fc61dfa735ea4))
+
 ## [0.2.2](https://github.com/EyeCantCU/cosign-action/compare/v0.2.1...v0.2.2) (2024-01-03)
 
 
