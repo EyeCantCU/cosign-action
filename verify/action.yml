@@ -26,12 +26,21 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Install cosign
+    - name: Fetch cosign from Chainguard
       shell: bash
       run: |
         docker pull cgr.dev/chainguard/cosign:latest
         CONTAINER_ID=$(docker run -d cgr.dev/chainguard/cosign:latest)
         docker cp "${CONTAINER_ID}":/usr/bin/cosign /usr/local/bin/cosign
+
+    - name: Validate cosign image signatures
+      shell: bash
+      run: |
+        set -o pipefail
+        if ! cosign verify --certificate-oidc-issuer=https://token.actions.githubusercontent.com --certificate-identity=https://github.com/chainguard-images/images/.github/workflows/release.yaml@refs/heads/main cgr.dev/chainguard/cosign | jq; then
+          echo "NOTICE: Failed to verify cosign image signatures."
+          exit 1
+        fi
 
     - name: Verify container
       shell: bash
