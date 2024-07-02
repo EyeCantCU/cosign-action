@@ -29,7 +29,11 @@ runs:
         password: ${{ inputs.registry-token }}
 
     - name: Install cosign
-      uses: sigstore/cosign-installer@v3.5.0
+      shell: bash
+      run: |
+        docker pull cgr.dev/chainguard/cosign:latest
+        docker run -d --name cosign cgr.dev/chainguard/cosign:latest
+        docker cp cosign:/usr/bin/cosign /usr/local/bin/cosign
 
     - name: Sign container image
       shell: bash
