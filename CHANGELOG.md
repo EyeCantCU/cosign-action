@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/EyeCantCU/cosign-action/compare/v0.3.0...v0.3.1) (2025-10-10)
+
+
+### Bug Fixes
+
+* **test-actions:** Verify containers that are still public ([5fc1cb4](https://github.com/EyeCantCU/cosign-action/commit/5fc1cb4e473d0cd6f1fba6017dca863093348a91))
+
 ## [0.3.0](https://github.com/EyeCantCU/cosign-action/compare/v0.2.2...v0.3.0) (2024-07-11)
 
 
